@@ -7,3 +7,7 @@ venv/
 token.json
 client_secret.json
 .env
+
+# Solana
+solana_daily/publisher.json
+artifacts/
