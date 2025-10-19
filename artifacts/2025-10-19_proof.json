@@ -1,0 +1,9 @@
+{
+  "date": "2025-10-19",
+  "network": "devnet",
+  "publisher": "FZnuWnXTVPfSgNdY1WGEMYQFedmTeq5C3crUSZM2ywd",
+  "txSignature": "5vhCtUMKMky1xeXEvjBoST5yfKqaT75vBqCitDePAc94oTko2KXMRHMN4rMGwoRwpYqwpxttqbXtTjiBDEfm8LRU",
+  "sha256": "$(cat artifacts/today.sha256 | tr -d '\n')",
+  "url": "https://nobot.news/capgemini-acquires-seimaf-bolstering-nuclear-engineering-amid-european-energy-shift/",
+  "label": "AIAN daily"
+}

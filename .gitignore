@@ -10,4 +10,10 @@ client_secret.json
 
 # Solana
 solana_daily/publisher.json
-artifacts/
+
+# Artifacts (Proof of work for solana hackathon)
+artifacts/*
+!artifacts/*.sha256
+!artifacts/*.sig
+!artifacts/*.json
+!artifacts/*.txt
