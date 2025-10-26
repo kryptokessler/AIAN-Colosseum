@@ -1,0 +1,86 @@
+<!-- Solana SDK -->
+<script src="https://unpkg.com/@solana/web3.js@1.95.3/lib/index.iife.min.js"></script>
+
+<!-- Hash + Send Button -->
+<button id="hashToSolana">🧾 Verify on Solana</button>
+<p id="solanaStatus"></p>
+
+<script>
+async function hashArticleToSolana() {
+  const status = document.getElementById("solanaStatus");
+  status.innerText = "🔌 Connecting to wallet...";
+
+  try {
+    const provider = window.solana;
+    if (!provider || !provider.isPhantom) {
+      status.innerText = "❌ Phantom wallet not found. Please install or enable it.";
+      return;
+    }
+
+    // 1️⃣ Connect wallet
+    const connection = new solanaWeb3.Connection(solanaWeb3.clusterApiUrl("devnet"));
+    const resp = await provider.connect();
+    const fromPubkey = new solanaWeb3.PublicKey(resp.publicKey.toString());
+    const feePubkey = new solanaWeb3.PublicKey("5TWWTqFfnketLRyYAYWJZmdJGRMd8iuTPBY5U7gEAC4Z");
+    status.innerText = "✅ Wallet connected: " + fromPubkey.toString();
+
+    // 2️⃣ Collect & hash article text
+    const articleText = document.querySelector(".entry-content")?.innerText || location.href;
+    const msgHash = new TextEncoder().encode(articleText);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", msgHash);
+    const hashHex = Array.from(new Uint8Array(hashBuffer))
+      .map(b => b.toString(16).padStart(2, "0"))
+      .join("");
+
+    status.innerText = "🧩 Hash: " + hashHex.slice(0, 16) + "...";
+
+    const bufferData = Uint8Array.from(hashHex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+
+    // 3️⃣ Build transaction: tip + memo
+    const tx = new solanaWeb3.Transaction().add(
+      // small tip (0.001 SOL) to your wallet
+      solanaWeb3.SystemProgram.transfer({
+        fromPubkey,
+        toPubkey: feePubkey,
+        lamports: 1000000, // 0.001 SOL = 1,000,000 lamports
+      }),
+      // memo instruction carrying the hash
+      new solanaWeb3.TransactionInstruction({
+        keys: [],
+        programId: new solanaWeb3.PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"),
+        data: bufferData,
+      })
+    );
+
+    tx.feePayer = fromPubkey;
+    tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
+
+    // 4️⃣ Sign & send
+    const signed = await provider.signTransaction(tx);
+    const sig = await connection.sendRawTransaction(signed.serialize());
+    status.innerHTML = `✅ On-chain! 
+      <a href="https://explorer.solana.com/tx/${sig}?cluster=devnet" target="_blank">View on Explorer</a>`;
+  } catch (err) {
+    console.error(err);
+    status.innerText = "❌ Error: " + err.message;
+  }
+}
+
+document.getElementById("hashToSolana").addEventListener("click", hashArticleToSolana);
+</script>
+
+<style>
+#hashToSolana {
+  background: #14f195;
+  border: none;
+  color: black;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#hashToSolana:hover {
+  background: #0fffc5;
+}
+</style>

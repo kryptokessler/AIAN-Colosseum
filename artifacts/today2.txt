@@ -1,0 +1,7 @@
+text = """DHL Aims to Simplify U.S. Customs with New Consolidated Clearance Service
+
+BONN, GERMANY – DHL Global Forwarding has launched a new service to streamline the customs process for goods entering the United States. The division of the global logistics company DHL Group announced the "DHL consolidated clearance service" in a recent press release.
+
+The new offering is designed to assist U.S. retailers and importers facing challenges from shifting global trade patterns and increasingly complex tariff regulations. By consolidating multiple individual shipments under a single customs entry, the service aims to create a more cost-efficient and simplified clearance process.
+
+This initiative allows businesses to manage their import operations more effectively, addressing the logistical and financial hurdles associated with processing numerous separate shipments at U.S. ports of entry."""
