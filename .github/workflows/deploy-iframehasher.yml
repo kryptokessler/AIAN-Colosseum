@@ -27,7 +27,7 @@ jobs:
         
     - name: Install dependencies
       working-directory: ./iframehasher
-      run: npm ci
+      run: npm ci --legacy-peer-deps
       
     - name: Run tests
       working-directory: ./iframehasher
@@ -75,7 +75,7 @@ jobs:
             comment.body.includes('🚀 Preview deployment available')
           );
           
-          const previewUrl = `https://${context.repo.owner}.github.io/${context.repo.repo}/iframehasher/`;
+          const previewUrl = `https://${context.repo.owner}.github.io/${context.repo.repo}/`;
           
           const body = `🚀 Preview deployment available at: ${previewUrl}
           
