@@ -1,0 +1,107 @@
+name: Deploy News Hash Verifier
+
+on:
+  push:
+    branches: [ main, feature/solana-daily ]
+    paths:
+      - 'iframehasher/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'iframehasher/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        cache-dependency-path: iframehasher/package-lock.json
+        
+    - name: Install dependencies
+      working-directory: ./iframehasher
+      run: npm ci
+      
+    - name: Run tests
+      working-directory: ./iframehasher
+      run: npm test -- --coverage --watchAll=false
+      
+    - name: Build React app
+      working-directory: ./iframehasher
+      run: npm run build
+      
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/solana-daily'
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./iframehasher/build
+        destination_dir: iframehasher
+        
+    - name: Create deployment artifact
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/solana-daily'
+      run: |
+        cd iframehasher/build
+        tar -czf ../../iframehasher-deployment.tar.gz .
+        
+    - name: Upload deployment artifact
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/solana-daily'
+      uses: actions/upload-artifact@v3
+      with:
+        name: iframehasher-build
+        path: iframehasher-deployment.tar.gz
+        
+    - name: Comment deployment URL
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const { data: comments } = await github.rest.issues.listComments({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+          });
+          
+          const botComment = comments.find(comment => 
+            comment.user.type === 'Bot' && 
+            comment.body.includes('🚀 Preview deployment available')
+          );
+          
+          const previewUrl = `https://${context.repo.owner}.github.io/${context.repo.repo}/iframehasher/`;
+          
+          const body = `🚀 Preview deployment available at: ${previewUrl}
+          
+          This deployment includes:
+          - ✨ Beautiful React UI with Framer Motion animations
+          - 🔗 Solana blockchain integration
+          - 📈 Bond curve pricing mechanism
+          - 💰 Earning mechanism for hash verification
+          - 📱 Responsive design for all devices
+          
+          The component can be embedded in WordPress using:
+          \`\`\`html
+          <iframe src="${previewUrl}" width="100%" height="600" frameborder="0"></iframe>
+          \`\`\``;
+          
+          if (botComment) {
+            await github.rest.issues.updateComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: botComment.id,
+              body: body
+            });
+          } else {
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body
+            });
+          }

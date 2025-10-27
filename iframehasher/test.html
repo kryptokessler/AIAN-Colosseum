@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Hash Verifier Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .article-content {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #007bff;
+        }
+        iframe {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>News Hash Verifier Test Page</h1>
+    
+    <div class="test-container">
+        <h2>Sample News Article</h2>
+        <div class="article-content">
+            <h3>Breaking: Major Tech Breakthrough Announced</h3>
+            <p><strong>Date:</strong> October 27, 2025</p>
+            <p>In a groundbreaking announcement today, researchers have unveiled a revolutionary new technology that promises to transform the way we interact with digital content. The innovation, developed over three years of intensive research, combines artificial intelligence with blockchain technology to create an immutable verification system for news articles.</p>
+            
+            <p>The system allows readers to hash news articles directly to the blockchain, creating a permanent, verifiable record of content authenticity. This addresses growing concerns about misinformation and fake news in the digital age.</p>
+            
+            <p>"This is a game-changer for media integrity," said Dr. Sarah Johnson, lead researcher on the project. "By leveraging blockchain technology, we can ensure that once an article is published, its content cannot be altered without detection."</p>
+            
+            <p>The technology is already being tested by several major news organizations and is expected to be widely adopted within the next year. Early adopters report significant improvements in reader trust and engagement.</p>
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <h2>News Hash Verifier Component</h2>
+        <p>Use the component below to hash this article to the Solana blockchain:</p>
+        
+        <!-- The iframe will load the React component -->
+        <iframe 
+            src="http://localhost:3000" 
+            width="100%" 
+            height="600" 
+            title="News Hash Verifier">
+        </iframe>
+    </div>
+    
+    <div class="test-container">
+        <h2>Integration Instructions</h2>
+        <p>To integrate this component into your WordPress site, use this code:</p>
+        <pre><code>&lt;iframe 
+  src="https://make-europe.github.io/Open-AI-News-Agency/iframehasher/" 
+  width="100%" 
+  height="600" 
+  frameborder="0"
+  style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"&gt;
+&lt;/iframe&gt;</code></pre>
+    </div>
+</body>
+</html>

@@ -44,6 +44,36 @@ python3 main.py
 4. Sends content to Vertex AI (Gemini).
 5. Outputs a concise, publishable news-style summary.
 
+## 🛡️ News Hash Verifier Component
+
+This project now includes a beautiful React component for blockchain article verification:
+
+### Features
+- **Blockchain Integration**: Hash news articles to Solana blockchain
+- **Bond Curve Pricing**: Dynamic pricing with earning mechanism
+- **Beautiful UI**: Modern design with smooth animations
+- **WordPress Ready**: Easy iframe integration
+- **Auto-Deployment**: GitHub Actions for smooth deployment
+
+### Quick Start
+```bash
+cd iframehasher
+npm install
+npm start
+```
+
+### WordPress Integration
+```html
+<iframe 
+  src="https://make-europe.github.io/Open-AI-News-Agency/iframehasher/" 
+  width="100%" 
+  height="600" 
+  frameborder="0">
+</iframe>
+```
+
+See [iframehasher/README.md](./iframehasher/README.md) for detailed documentation.
+
 ## 📌 Notes
 
 * Do not share `client_secret.json` or `token.json`.
